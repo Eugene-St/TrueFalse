@@ -78,7 +78,7 @@ class ViewController: UIViewController {
             questionField.text = "Sorry, wrong answer!"
         }
         
-        loadNextRoundWithDelay(seconds: 2)
+        loadNextRoundWithDelay(seconds: 0)
     }
     
     func nextRound() {
