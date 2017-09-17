@@ -1,4 +1,14 @@
 //
+//  HelperFile.swift
+//  TrueFalseStarter
+//
+//  Created by Work on 9/17/17.
+//  Copyright © 2017 Treehouse. All rights reserved.
+//
+
+import Foundation
+
+//
 //  ViewController.swift
 //  TrueFalseStarter
 //
@@ -10,13 +20,15 @@ import UIKit
 import GameKit
 import AudioToolbox
 
+/*
+
 class ViewController: UIViewController {
     
     let questionsPerRound = 4
     var questionsAsked = 0
     var correctQuestions = 0
     var indexOfSelectedQuestion: Int = 0
-    var soundProvider = SoundProvider()
+    let soundProvider = SoundProvider()
     
     var gameSound: SystemSoundID = 0
     
@@ -32,16 +44,15 @@ class ViewController: UIViewController {
     @IBOutlet weak var falseButton: UIButton!
     @IBOutlet weak var playAgainButton: UIButton!
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        soundProvider.loadGameStartSound()
-        //loadGameStartSound()
+        loadGameStartSound()
         // Start game
         playGameStartSound()
         displayQuestion()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -103,7 +114,7 @@ class ViewController: UIViewController {
         nextRound()
     }
     
-
+    
     
     // MARK: Helper Methods
     
@@ -129,4 +140,4 @@ class ViewController: UIViewController {
         AudioServicesPlaySystemSound(gameSound)
     }
 }
-
+*/
