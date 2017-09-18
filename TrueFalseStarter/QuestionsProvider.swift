@@ -27,18 +27,20 @@ struct QuestionsProvider {
     
     var questionToDisplay : QuestionForm
     
+    //Changes each time a question is asked and
+    //used to inform the game which question to remove from the questions array
     var selectedIndex = 0
     
     var consumedIndexes: [Int] = []
 
-let question1 = QuestionForm(withQuestion: "Выпивая какой напиток по утрам у вас есть шанс сбросить вес быстрее?", correctAnswer: "Вода", possibleChoices: ["Кисель","Пивко","Тосол"])
-let question2 = QuestionForm(withQuestion: "Правда ли то что выпивая воду в течении 9ти дней вы потратите каллории равные бегу 8ми км в день?", correctAnswer: "Да", possibleChoices: ["Нет","Та хрен его знает"])
-let question3 = QuestionForm(withQuestion: "Помогает ли вода ускорять метаболизм?", correctAnswer: "Да", possibleChoices: ["Пффф, еще чего","Нет","Ну если только совсем чуть чуть"])
-let question4 = QuestionForm(withQuestion: "Наш мозг состоит на ... % из воды ?", correctAnswer: "85", possibleChoices: ["9","100","50"])
-let question5 = QuestionForm(withQuestion: "Помогает ли обильное питье воды сбросить лишний вес?", correctAnswer: "Да, я уже сбросил пару кг", possibleChoices: ["Всмысле?!?! Нет конечно","Не знаю, я все равно буду есть после 6ти","Мне плевать!"])
-let question6 = QuestionForm(withQuestion: "Снижает ли обильное питье воды риск заболеть сердечно-сосудистыми заболеваниями? ", correctAnswer: "Да, конечно", possibleChoices: ["При чем вообще тут это?!","Аффтар, ты идиот?","Нет!"])
-let question7 = QuestionForm(withQuestion: "Риск сердечного приступа уменьшается на ... % при выпивании 5ти стаканов в день", correctAnswer: "41", possibleChoices: ["100","0","Чушь, это все бабкины выдумки"])
-let question8 = QuestionForm(withQuestion: "Станет ли кожа чище и влажнее если вы пьете воду регулярно?", correctAnswer: "Да, как попка младенца", possibleChoices: ["Нет, я работаю на шахте, мне не поможет","А прыщи тоже уйдут?","Плевать, я пью колу"])
+let question1 = QuestionForm(withQuestion: "Выпивая какой напиток по утрам у вас есть шанс сбросить вес быстрее?", correctAnswer: "Вода", possibleChoices: ["Кисель","Пивко","Тосол", "Вода"])
+let question2 = QuestionForm(withQuestion: "Правда ли то что выпивая воду в течении 9ти дней вы потратите каллории равные бегу 8ми км в день?", correctAnswer: "Да", possibleChoices: ["Нет","Та хрен его знает", "Да"])
+let question3 = QuestionForm(withQuestion: "Помогает ли вода ускорять метаболизм?", correctAnswer: "Конечно", possibleChoices: ["Пффф, еще чего","Нет","Ну если чуть чуть", "Конечно"])
+let question4 = QuestionForm(withQuestion: "Наш мозг состоит на ... % из воды ?", correctAnswer: "85", possibleChoices: ["9","100","50", "85"])
+let question5 = QuestionForm(withQuestion: "Помогает ли обильное питье воды сбросить лишний вес?", correctAnswer: "Да, я уже похудел", possibleChoices: ["Всмысле?!?!Нет конечно","Не знаю","Мне плевать!", "Да, я уже похудел"])
+let question6 = QuestionForm(withQuestion: "Снижает ли обильное питье воды риск заболеть сердечно-сосудистыми заболеваниями? ", correctAnswer: "Да, конечно", possibleChoices: ["При чем тут это?!","Аффтар, ты идиот?","Нет!", "Да, конечно"])
+let question7 = QuestionForm(withQuestion: "Риск сердечного приступа уменьшается на ... % при выпивании 5ти стаканов в день", correctAnswer: "41", possibleChoices: ["100","0","Чушь, это бабкины выдумки", "41"])
+let question8 = QuestionForm(withQuestion: "Станет ли кожа чище и влажнее если вы пьете воду регулярно?", correctAnswer: "Да, как попка младенца", possibleChoices: ["Нет, мне не поможет","А прыщи тоже уйдут?","Плевать, я пью колу", "Да, как попка младенца"])
 
     init() {
     

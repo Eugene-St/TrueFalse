@@ -12,6 +12,7 @@
 		9605C9D31F6E7171002A0D9E /* SoundsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9605C9D21F6E7171002A0D9E /* SoundsProvider.swift */; };
 		9605C9D51F6E7182002A0D9E /* ColorsProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9605C9D41F6E7182002A0D9E /* ColorsProvider.swift */; };
 		9605C9D71F6E7918002A0D9E /* HelperFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9605C9D61F6E7918002A0D9E /* HelperFile.swift */; };
+		96F22EDF1F6EB000009868D8 /* bath5.wav in Resources */ = {isa = PBXBuildFile; fileRef = 96F22EDE1F6EB000009868D8 /* bath5.wav */; };
 		97093D3C1C913506001275BC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97093D3B1C913506001275BC /* AppDelegate.swift */; };
 		97093D3E1C913506001275BC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97093D3D1C913506001275BC /* ViewController.swift */; };
 		97093D411C913506001275BC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97093D3F1C913506001275BC /* Main.storyboard */; };
@@ -26,6 +27,7 @@
 		9605C9D21F6E7171002A0D9E /* SoundsProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SoundsProvider.swift; sourceTree = "<group>"; };
 		9605C9D41F6E7182002A0D9E /* ColorsProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorsProvider.swift; sourceTree = "<group>"; };
 		9605C9D61F6E7918002A0D9E /* HelperFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelperFile.swift; sourceTree = "<group>"; };
+		96F22EDE1F6EB000009868D8 /* bath5.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = bath5.wav; path = "../../../../../../MyNEwProject Items/bath5.wav"; sourceTree = "<group>"; };
 		97093D381C913506001275BC /* TrueFalseStarter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrueFalseStarter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97093D3B1C913506001275BC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		97093D3D1C913506001275BC /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 				97093D441C913506001275BC /* LaunchScreen.storyboard */,
 				97093D471C913506001275BC /* Info.plist */,
 				97093D521C932116001275BC /* GameSound.wav */,
+				96F22EDE1F6EB000009868D8 /* bath5.wav */,
 			);
 			path = TrueFalseStarter;
 			sourceTree = "<group>";
@@ -146,6 +149,7 @@
 				97093D461C913506001275BC /* LaunchScreen.storyboard in Resources */,
 				97093D431C913506001275BC /* Assets.xcassets in Resources */,
 				97093D411C913506001275BC /* Main.storyboard in Resources */,
+				96F22EDF1F6EB000009868D8 /* bath5.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

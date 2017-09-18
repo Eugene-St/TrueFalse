@@ -10,123 +10,241 @@ import UIKit
 import GameKit
 import AudioToolbox
 
+import UIKit
+
 class ViewController: UIViewController {
     
-    let questionsPerRound = 4
-    var questionsAsked = 0
-    var correctQuestions = 0
-    var indexOfSelectedQuestion: Int = 0
-    var soundProvider = SoundProvider()
-    
-    var gameSound: SystemSoundID = 0
-    
-    let trivia: [[String : String]] = [
-        ["Question": "Only female koalas can whistle", "Answer": "False"],
-        ["Question": "Blue whales are technically whales", "Answer": "True"],
-        ["Question": "Camels are cannibalistic", "Answer": "False"],
-        ["Question": "All ducks are birds", "Answer": "True"]
-    ]
-    
     @IBOutlet weak var questionField: UILabel!
-    @IBOutlet weak var trueButton: UIButton!
-    @IBOutlet weak var falseButton: UIButton!
-    @IBOutlet weak var playAgainButton: UIButton!
+    @IBOutlet weak var optionOne: UIButton!
+    @IBOutlet weak var optionTwo: UIButton!
+    @IBOutlet weak var optionFour: UIButton!
+    @IBOutlet weak var optionThree: UIButton!
+    @IBOutlet weak var answerLabel: UILabel!
+    @IBOutlet weak var playAgain: UIButton!
     
-
+    var soundProvider = SoundProvider()
+    var questionProvider = QuestionsProvider()
+    var colorsProvider = ColorsProvider()
+    var timer: Timer = Timer()
+    var seconds = 15
+    var game = QuestionsProvider()
+    var answerButtons: [UIButton] = []
+    
+    //Start the app
     override func viewDidLoad() {
         super.viewDidLoad()
-        soundProvider.loadGameStartSound()
-        //loadGameStartSound()
-        // Start game
-        playGameStartSound()
-        displayQuestion()
+
+    answerButtons = [optionOne, optionTwo, optionThree, optionFour]
+    
+    soundProvider.loadGameStartSound()
+    
+    soundProvider.playGameStartSound()
+        
+    displayQuestion()
+    
+    //Stylize buttons borders
+    for button in answerButtons
+    {
+        button.layer.cornerRadius = 10.0
+    }
+
+    }
+    
+    //--------------------------
+    
+    func displayQuestion()
+    {
+        game.pickQuestion()
+        questionField.text = game.questionToDisplay.question
+        
+        for button in answerButtons
+        {
+            button.backgroundColor = colorsProvider.activeButtonColor
+            button.setTitleColor(UIColor.lightGray, for: UIControlState.disabled)
+            button.isEnabled = true
+        
+        }
+        
+        assignButtonTitles()
+        
+        playAgain.isHidden = true
+        answerLabel.isHidden = true
+        
+        
+    }
+    
+    //Start timer func
+    
+    //---------------------------
+    
+    func assignButtonTitles()
+    {
+        let newQuestion = game.questionToDisplay
+        let numberOfChoices: Int = newQuestion.possibleChoices.count
+        game.randomizedAnswerChoices()
+        
+        for buttonIndex in 0..<numberOfChoices
+        {
+            var consumedIndexes = game.consumedIndexes
+            let randomIndex = consumedIndexes[0]
+            answerButtons[buttonIndex].setTitle(newQuestion.possibleChoices[randomIndex], for: .normal)
+            game.consumedIndexes.remove(at: 0)
+        }
+        
+        if numberOfChoices < answerButtons.count
+        {
+            disableButtons(usingIndexes: numberOfChoices)
+        }
+    }
+    
+    //------------------------------
+        
+    func disableButtons(usingIndexes numberOfChoices: Int)
+        {
+            if numberOfChoices < answerButtons.count
+            {
+                for index in numberOfChoices..<answerButtons.count
+                {
+                    let button = answerButtons[index]
+                    button.setTitle("N/A", for: .normal)
+                    button.isEnabled = false
+                    button.backgroundColor = colorsProvider.gray
+                }
+            }
+        }
+    
+    //-------------
+    
+    func displayScore()
+    {
+        questionField.text = "Спасибо за Ваше время!\nВы ответили правильно на \(game.correctQuestions) вопросов из \(game.questionsPerRound)!"
+        
+        game = QuestionsProvider()
+        
+        for button in answerButtons
+        {
+            button.isHidden = true
+        }
+        
+        playAgain.isHidden = false
+    }
+ 
+    @IBAction func checkAnswer(_ sender: UIButton)
+    {
+        let correctAnswer = game.correctAnswer
+        
+        for button in answerButtons
+        {
+            button.isEnabled = false
+            button.backgroundColor = colorsProvider.inactiveButtonColor
+        }
+        
+        if sender.currentTitle == correctAnswer
+        {
+            game.correctQuestions += 1
+            answerLabel.textColor = colorsProvider.correctColor
+            answerLabel.text = "Ага"
+            sender.backgroundColor = colorsProvider.correctColor
+            sender.setTitleColor(UIColor.white, for: UIControlState.disabled)
+        }
+        else
+        {
+            
+            answerLabel.textColor = colorsProvider.incorrectColor
+            answerLabel.text = "Неа..."
+            sender.backgroundColor = colorsProvider.incorrectColor
+            
+            for button in answerButtons {
+                if button.currentTitle == correctAnswer
+                {
+                    button.backgroundColor = colorsProvider.correctColor
+                    let brightWhite = UIColor(white: 1.0, alpha: 1.0)
+                    button.setTitleColor(brightWhite, for: UIControlState.disabled)
+                }
+            }
+        }
+        
+        answerLabel.isHidden = false
+        game.questionsAsked += 1
+        loadNextRoundWithDelay(seconds: 2)
+    }
+    
+    func nextRound()
+    {
+        if game.questionsAsked == game.questionsPerRound
+        {
+            displayScore()
+        }
+        else
+        {
+            if game.questionsAsked != 0
+            {
+                game.questions.remove(at: game.selectedIndex)
+            }
+            displayQuestion()
+        }
+    }
+    
+    @IBAction func playAgainButton()
+    {
+        for button in answerButtons
+        {
+            button.isHidden = true
+        }
+        nextRound()
+    }
+
+    
+    func loadNextRoundWithDelay(seconds: Int)
+    {
+        let delay = Int64(NSEC_PER_SEC * UInt64(seconds))
+        
+        let dispatchTime = DispatchTime.now() + Double(delay) / Double(NSEC_PER_SEC)
+        DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
+            self.answerLabel.isHidden = true
+            self.nextRound()
+        }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    func displayQuestion() {
-        indexOfSelectedQuestion = GKRandomSource.sharedRandom().nextInt(upperBound: trivia.count)
-        let questionDictionary = trivia[indexOfSelectedQuestion]
-        questionField.text = questionDictionary["Question"]
-        playAgainButton.isHidden = true
-    }
-    
-    func displayScore() {
-        // Hide the answer buttons
-        trueButton.isHidden = true
-        falseButton.isHidden = true
-        
-        // Display play again button
-        playAgainButton.isHidden = false
-        
-        questionField.text = "Way to go!\nYou got \(correctQuestions) out of \(questionsPerRound) correct!"
-        
-    }
-    
-    @IBAction func checkAnswer(_ sender: UIButton) {
-        // Increment the questions asked counter
-        questionsAsked += 1
-        
-        let selectedQuestionDict = trivia[indexOfSelectedQuestion]
-        let correctAnswer = selectedQuestionDict["Answer"]
-        
-        if (sender === trueButton &&  correctAnswer == "True") || (sender === falseButton && correctAnswer == "False") {
-            correctQuestions += 1
-            questionField.text = "Correct!"
-        } else {
-            questionField.text = "Sorry, wrong answer!"
-        }
-        
-        loadNextRoundWithDelay(seconds: 2)
-    }
-    
-    func nextRound() {
-        if questionsAsked == questionsPerRound {
-            // Game is over
-            displayScore()
-        } else {
-            // Continue game
-            displayQuestion()
-        }
-    }
-    
-    @IBAction func playAgain() {
-        // Show the answer buttons
-        trueButton.isHidden = false
-        falseButton.isHidden = false
-        
-        questionsAsked = 0
-        correctQuestions = 0
-        nextRound()
-    }
-    
-
-    
-    // MARK: Helper Methods
-    
-    func loadNextRoundWithDelay(seconds: Int) {
-        // Converts a delay in seconds to nanoseconds as signed 64 bit integer
-        let delay = Int64(NSEC_PER_SEC * UInt64(seconds))
-        // Calculates a time value to execute the method given current time and delay
-        let dispatchTime = DispatchTime.now() + Double(delay) / Double(NSEC_PER_SEC)
-        
-        // Executes the nextRound method at the dispatch time on the main queue
-        DispatchQueue.main.asyncAfter(deadline: dispatchTime) {
-            self.nextRound()
-        }
-    }
-    
-    func loadGameStartSound() {
-        let pathToSoundFile = Bundle.main.path(forResource: "GameSound", ofType: "wav")
-        let soundURL = URL(fileURLWithPath: pathToSoundFile!)
-        AudioServicesCreateSystemSoundID(soundURL as CFURL, &gameSound)
-    }
-    
-    func playGameStartSound() {
-        AudioServicesPlaySystemSound(gameSound)
-    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
