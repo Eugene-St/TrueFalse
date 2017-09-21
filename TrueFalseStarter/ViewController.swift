@@ -20,6 +20,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var optionFour: UIButton!
     @IBOutlet weak var optionThree: UIButton!
     @IBOutlet weak var answerLabel: UILabel!
+    @IBOutlet weak var currentPosition: UILabel!
+    @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet weak var playAgain: UIButton!
     
     var soundProvider = SoundProvider()
@@ -69,11 +71,49 @@ class ViewController: UIViewController {
         
         playAgain.isHidden = true
         answerLabel.isHidden = true
+        currentPosition.isHidden = false
+        currentPosition.text = "\(game.questionsAsked)/\(game.questionsPerRound)"
+        startTimer()
         
+        seconds = 15
+        timerLabel.text = "\(seconds)"
+        timerLabel.isHidden = true
         
     }
     
-    //Start timer func
+    func startTimer()
+    {
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: (#selector(ViewController.updateTimer)), userInfo: nil, repeats: true)
+    }
+    
+    func updateTimer()
+    {
+        seconds -= 1
+        timerLabel.text = "\(seconds)"
+        if seconds == 0
+        {
+            let button = UIButton(type: .system)
+            button.setTitle("Time Expired", for: .normal)
+            checkAnswer(button)
+            timer.invalidate()
+        }
+        else if seconds <= 8
+        {
+            let modulo: Bool = seconds % 2 == 0
+            switch modulo {
+            case false:
+                for button in answerButtons
+                {
+                    button.backgroundColor = colorsProvider.activeButtonColor
+                }
+            default:
+                for button in answerButtons
+                {
+                    button.backgroundColor = UIColor.white
+                }
+            }
+        }
+    }
     
     //---------------------------
     
@@ -115,9 +155,21 @@ class ViewController: UIViewController {
     
     //-------------
     
+    func displayResult() -> String {
+        
+        let a = "Спасибо за Ваше время!\nВы ответили правильно на \(game.correctQuestions)"
+        let b = "из \(game.questionsPerRound)!"
+        
+        switch game.questionsPerRound {
+        case 2,3,4: return a + " вопроса " + b
+        case 1: return a + " вопрос " + b
+        default: return a + " вопросов " + b
+        }
+    }
+    
     func displayScore()
     {
-        questionField.text = "Спасибо за Ваше время!\nВы ответили правильно на \(game.correctQuestions) вопросов из \(game.questionsPerRound)!"
+        questionField.text = displayResult()
         
         game = QuestionsProvider()
         
@@ -129,20 +181,26 @@ class ViewController: UIViewController {
         playAgain.isHidden = false
     }
  
-    @IBAction func checkAnswer(_ sender: UIButton)
-    {
+
+    @IBAction func checkAnswer(_ sender: UIButton) {
+        if timer.isValid
+        {
+            timer.invalidate()
+        }
+        timerLabel.isHidden = true
+        
         let correctAnswer = game.correctAnswer
         
         for button in answerButtons
         {
             button.isEnabled = false
-            button.backgroundColor = colorsProvider.inactiveButtonColor
+            button.backgroundColor = colorsProvider.activeButtonColor
         }
         
         if sender.currentTitle == correctAnswer
         {
             game.correctQuestions += 1
-            answerLabel.textColor = colorsProvider.correctColor
+            answerLabel.textColor = colorsProvider.correctColorAlpha
             answerLabel.text = "Ага"
             sender.backgroundColor = colorsProvider.correctColor
             sender.setTitleColor(UIColor.white, for: UIControlState.disabled)
@@ -150,7 +208,7 @@ class ViewController: UIViewController {
         else
         {
             
-            answerLabel.textColor = colorsProvider.incorrectColor
+            answerLabel.textColor = colorsProvider.incorrectColorAlpha
             answerLabel.text = "Неа..."
             sender.backgroundColor = colorsProvider.incorrectColor
             
@@ -167,6 +225,7 @@ class ViewController: UIViewController {
         answerLabel.isHidden = false
         game.questionsAsked += 1
         loadNextRoundWithDelay(seconds: 2)
+        currentPosition.isHidden = true
     }
     
     func nextRound()
@@ -189,7 +248,7 @@ class ViewController: UIViewController {
     {
         for button in answerButtons
         {
-            button.isHidden = true
+            button.isHidden = false
         }
         nextRound()
     }
